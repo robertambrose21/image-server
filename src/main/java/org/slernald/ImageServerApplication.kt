@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.web.multipart.MultipartFile
+import java.io.File
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -21,13 +22,13 @@ open class ImageServerApplication {
     @Autowired
     lateinit var imageService: ImageServiceImpl
 
-    private fun createTestImage(): MultipartFile? {
-        var path = Paths.get("assets/icedout.png")
+    private fun createTestImage(filename: String, extension: String): MultipartFile? {
+        var path = Paths.get("assets/${filename}")
         return try {
             MockMultipartFile(
-                    "icedout.png",
-                    "icedout.png",
-                    "image/png",
+                    filename,
+                    filename,
+                    "image/${extension}",
                     Files.readAllBytes(path));
         } catch(e: IOException) {
             log.error("Couldn't find image", e)
@@ -44,7 +45,10 @@ open class ImageServerApplication {
 
             log.info(System.getProperty("user.dir"))
 
-            createTestImage()?.let { imageService.saveImage(it) }
+            createTestImage("icedout.png", "png")?.let { imageService.saveImage(it) }
+            createTestImage("1569155152962.png", "png")?.let { imageService.saveImage(it) }
+            createTestImage("1569657260488.png", "png")?.let { imageService.saveImage(it) }
+            createTestImage("86265668_112875730279404_444539551906529280_n.png", "png")?.let { imageService.saveImage(it) }
 
             for(tag in tagRepository.findAll()) {
                 log.info(tag.toString())

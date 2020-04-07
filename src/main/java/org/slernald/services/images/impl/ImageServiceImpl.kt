@@ -31,4 +31,8 @@ class ImageServiceImpl() : ImageService {
         return imageRepository.findById(id);
     }
 
+    override fun getAllImageIds(): List<Long?> {
+        return imageRepository.findAll().map { it -> it?.id };
+    }
+
 }

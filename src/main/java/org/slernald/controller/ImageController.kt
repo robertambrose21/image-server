@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RestController
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 import javax.servlet.http.HttpServletResponse
 
-@Controller
+@RestController
 class ImageController {
 
     @Autowired
@@ -28,6 +29,11 @@ class ImageController {
             var inputStream = ByteArrayInputStream(bytes)
             IOUtils.copy(inputStream, response.outputStream)
         }
+    }
+
+    @GetMapping("/images")
+    fun getAllImageIds(): List<Long?> {
+        return imageService.getAllImageIds();
     }
 
 }

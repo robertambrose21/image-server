@@ -10,4 +10,6 @@ interface ImageService {
 
     fun getImage(id: Long): Optional<Image?>
 
+    fun getAllImageIds(): List<Long?>
+
 }
