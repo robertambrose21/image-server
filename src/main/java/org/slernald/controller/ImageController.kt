@@ -22,10 +22,19 @@ class ImageController {
         var image = imageService.getImage(id)
 
         image.ifPresent {
-            // TODO: Handle nullables properly
-            var bytes = ByteArray(it.data!!.size) { i -> it.data!![i] }
-            response.contentType = "image/png"
-            var inputStream = ByteArrayInputStream(bytes)
+            response.contentType = it.contentType
+            var inputStream = ByteArrayInputStream(it.data)
+            IOUtils.copy(inputStream, response.outputStream)
+        }
+    }
+
+    @GetMapping("images/{id}/thumb")
+    fun getImageThumbnail(@PathVariable id: Long, response: HttpServletResponse) {
+        var image = imageService.getImage(id)
+
+        image.ifPresent {
+            response.contentType = it.contentType
+            var inputStream = ByteArrayInputStream(it.thumbData)
             IOUtils.copy(inputStream, response.outputStream)
         }
     }

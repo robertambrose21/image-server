@@ -9,11 +9,18 @@ class Image {
     val id: Long? = null
 
     @Lob
-    var data: Array<Byte>? = null
+    var data: ByteArray? = null
+
+    @Lob
+    var thumbData: ByteArray? = null
+
+    var contentType: String? = null
 
     constructor() {}
 
-    constructor(data: Array<Byte>?) {
+    constructor(data: ByteArray?, thumbData: ByteArray?, contentType: String?) {
         this.data = data
+        this.thumbData = thumbData
+        this.contentType = contentType
     }
 }
