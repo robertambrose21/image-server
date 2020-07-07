@@ -3,22 +3,22 @@ package org.slernald.dao
 import javax.persistence.*
 
 @Entity
-class Image {
+class ImageDao {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Long? = null
 
     @Lob
-    var data: ByteArray? = null
+    lateinit var data: ByteArray
 
     @Lob
-    var thumbData: ByteArray? = null
+    lateinit var thumbData: ByteArray
 
-    var contentType: String? = null
+    lateinit var contentType: String
 
     constructor() {}
 
-    constructor(data: ByteArray?, thumbData: ByteArray?, contentType: String?) {
+    constructor(data: ByteArray, thumbData: ByteArray, contentType: String) {
         this.data = data
         this.thumbData = thumbData
         this.contentType = contentType

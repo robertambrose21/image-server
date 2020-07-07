@@ -1,6 +1,6 @@
 package org.slernald
 
-import org.slernald.dao.Tag
+import org.slernald.dao.TagDao
 import org.slernald.repository.ImageRepository
 import org.slernald.repository.TagRepository
 import org.slernald.services.images.impl.ImageServiceImpl
@@ -12,7 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.mock.web.MockMultipartFile
 import org.springframework.web.multipart.MultipartFile
-import java.io.File
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -39,16 +38,16 @@ open class ImageServerApplication {
     @Bean
     open fun demo(tagRepository: TagRepository, imageRepository: ImageRepository): CommandLineRunner {
         return CommandLineRunner { _: Array<String?>? ->
-            tagRepository.save(Tag("TestTag5", 2))
-            tagRepository.save(Tag("TestTag2", 1))
-            tagRepository.save(Tag("Ocean", 50))
+            tagRepository.save(TagDao("TestTag5"))
+            tagRepository.save(TagDao("TestTag2"))
+            tagRepository.save(TagDao("Ocean"))
 
             log.info(System.getProperty("user.dir"))
 
-            createTestImage("icedout.png", "png")?.let { imageService.saveImage(it) }
-            createTestImage("1569155152962.png", "png")?.let { imageService.saveImage(it) }
-            createTestImage("1569657260488.png", "png")?.let { imageService.saveImage(it) }
-            createTestImage("86265668_112875730279404_444539551906529280_n.png", "png")?.let { imageService.saveImage(it) }
+            createTestImage("icedout.png", "png")?.let { imageService.saveImage(it, emptyList()) }
+            createTestImage("1569155152962.png", "png")?.let { imageService.saveImage(it, emptyList()) }
+            createTestImage("1569657260488.png", "png")?.let { imageService.saveImage(it, emptyList()) }
+            createTestImage("86265668_112875730279404_444539551906529280_n.png", "png")?.let { imageService.saveImage(it, emptyList()) }
 
             for(tag in tagRepository.findAll()) {
                 log.info(tag.toString())

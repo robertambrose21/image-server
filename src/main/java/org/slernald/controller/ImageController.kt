@@ -1,14 +1,12 @@
 package org.slernald.controller
 
-import jdk.internal.util.xml.impl.Input
 import org.apache.tomcat.util.http.fileupload.IOUtils
+import org.slernald.dto.TagsDto
 import org.slernald.services.images.impl.ImageServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import java.io.ByteArrayInputStream
-import java.io.InputStream
 import javax.servlet.http.HttpServletResponse
 
 @RestController
@@ -18,6 +16,7 @@ class ImageController {
     lateinit var imageService: ImageServiceImpl
 
     @GetMapping("images/{id}")
+    @ResponseBody
     fun getImage(@PathVariable id: Long, response: HttpServletResponse) {
         var image = imageService.getImage(id)
 
@@ -41,12 +40,22 @@ class ImageController {
 
     @GetMapping("/images")
     fun getAllImageIds(): List<Long?> {
-        return imageService.getAllImageIds();
+        return imageService.getAllImageIds()
     }
 
     @PostMapping("/images")
     fun saveImage(@RequestParam("data") file: MultipartFile) {
-        imageService.saveImage(file);
+        imageService.saveImage(file, emptyList())
+    }
+
+    @PutMapping("images/{id}/tags")
+    fun addImageTags(@PathVariable id: Long, @RequestBody dto: TagsDto) {
+        imageService.addTagsToImage(id, dto.getTags())
+    }
+
+    @GetMapping("images/{id}/tags")
+    fun getImageTags(@PathVariable id: Long): List<String?>? {
+        return imageService.getImageTagNames(id)
     }
 
 }
